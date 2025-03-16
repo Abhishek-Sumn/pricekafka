@@ -39,7 +39,11 @@ export function SelectForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values:",{
-     
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
     })
   }
 
@@ -72,14 +76,7 @@ export function SelectForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" onClick={() => {
-        toast('A Sonner toast', {
-          className: 'z-100',
-          description: 'With a description and an icon',
-          duration: 5000
-          
-        });
-      }}>Submit</Button>
+        <Button type="submit" >Submit</Button>
       </form>
     </Form>
   )
