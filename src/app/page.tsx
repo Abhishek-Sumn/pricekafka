@@ -12,10 +12,10 @@ import { toast } from 'sonner';
 import { FloatingDockDemo } from "@/components/floatingDeck/page";
 import { TypewriterEffectDemo } from "@/components/heroWriter/page";
 import Counter from "@/components/price/page";
+import {BearCounter,Controls} from "@/store/store"
+import { RadioGroupComp } from "@/components/radio/page";
+
 export default function Home() {
-
-
-
   return (
 
     <div className="">
@@ -50,14 +50,14 @@ export default function Home() {
             </div>
 
             <div className="flex items-center justify-center">
-            <DrawerDemo/>
+            <RadioGroupComp/>
             </div>
 
       </div>
-
       <div className="relative">
         <Counter/>
       </div>
+    
 
       <div className="fixed  top-0 left-0 p-4">
         <MorphingTextDemo />

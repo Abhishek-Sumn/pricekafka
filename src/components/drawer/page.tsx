@@ -3,8 +3,10 @@
 import * as React from "react"
 import { Minus, Plus } from "lucide-react"
 import { Bar, BarChart, ResponsiveContainer } from "recharts"
-
+import axios from "axios";
 import { Button } from "@/components/ui/button"
+import { toast } from 'sonner';
+import { SetUpdatedPrice } from "@/store/store";
 import {
   Drawer,
   DrawerClose,
@@ -15,6 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import { useState } from "react"
 
 const data = [
   {
@@ -60,15 +63,55 @@ const data = [
 
 export  function DrawerDemo() {
   const [goal, setGoal] = React.useState(5)
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
+  const handleUpdateDistance = async (totalDistance: number) => {
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL; // Fetch environment variable
+  
+      if (!API_URL) {
+        throw new Error("API URL is not defined in environment variables.");
+      }
+  
+      const res = await axios.get(`${API_URL}/Price/updateDistance`, {
+        params: { Distance: totalDistance }, // Query parameter
+        headers: { Accept: "*/*" }, // Optional, replicating cURL headers
+      });
+  
+      setResponse(res.data);
+      await SetUpdatedPrice();
+      toast.success("Distance Updated Succesfully");
 
+    } catch (err: any) {
+      setError(err.message);
+      toast("Error occurred:", {
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(err, null, 2)}</code>
+          </pre>
+        ),
+      });
+    }
+  };
+
+  
   function onClick(adjustment: number) {
     setGoal(Math.max(0, Math.min(20, goal + adjustment)))
+    
   }
 
   return (
     <Drawer >
       <DrawerTrigger asChild>
-        <Button variant="outline">Set Distance</Button>
+
+        <button className="p-[3px] relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+          <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
+          Set Distance
+          </div>
+        </button>
+
+        
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
@@ -126,7 +169,7 @@ export  function DrawerDemo() {
           <DrawerFooter>
            
             <DrawerClose asChild>
-              <Button >Submit</Button>
+              <Button onClick={ () => handleUpdateDistance(goal)}>Submit</Button>
             </DrawerClose>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
