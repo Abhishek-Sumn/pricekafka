@@ -2,11 +2,11 @@
 import { useEffect, useRef } from "react";
 import { toast } from 'sonner';
 import axios from "axios";
-import { Cont, sessionData, SetUpdatedPrice ,updateTraffic } from "@/store/store";
-import { useStore } from "zustand";
+import { sessionData, SetUpdatedPrice ,updateTraffic } from "@/store/store";
+
 
 export function RadioGroupComp() {
-  const handleCont = Cont();
+
   const session = sessionData();
   const traffic = session.traffic; // Get traffic value from Zustand store
   const radioRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
@@ -30,11 +30,17 @@ export function RadioGroupComp() {
       await SetUpdatedPrice();
       updateTraffic(totalDistance);
       toast.success("Traffic Condition Updated Successfully");
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("Error :", {
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(err.message, null, 2)}</code>
+       <code className="text-white">
+          {JSON.stringify(
+            err instanceof Error ? err.message : 'Unknown error',
+            null,
+            2
+          )}
+        </code>
           </pre>
         ),
       });
@@ -56,7 +62,9 @@ export function RadioGroupComp() {
             <div className="flex items-center ps-3">
               <input
                 id={`radio-${item.id}`}
-                ref={(el) => (radioRefs.current[item.id] = el)}
+                ref={(el) => {
+                  radioRefs.current[item.id] = el;
+                }}
                 type="radio"
                 name="list-radio"
                 className="text-white w-4 h-3 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"

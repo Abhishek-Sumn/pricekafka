@@ -1,15 +1,5 @@
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
-import {
-  IconBrandGithub,
-  IconBrandX,
-  IconExchange,
-  IconHome,
-  IconNewSection,
-  IconTerminal2,
-} from "@tabler/icons-react";
-import Image from "next/image";
-import { Value } from "@radix-ui/react-select";
 
 export function FloatingDockDemo() {
   const links = [
@@ -17,7 +7,6 @@ export function FloatingDockDemo() {
       title: "Sunny",
       icon: (
         <img src="./sun.svg" width="100" height="100" alt="" />
-        //<IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "#",
       value: 2

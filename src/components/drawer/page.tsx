@@ -17,7 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { useState } from "react"
+
 
 const data = [
   {
@@ -75,7 +75,6 @@ export  function DrawerDemo() {
     f();
   }, []);
 
-  const [error, setError] = useState(null);
   const handleUpdateDistance = async (totalDistance: number) => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL; // Fetch environment variable
@@ -84,7 +83,7 @@ export  function DrawerDemo() {
         throw new Error("API URL is not defined in environment variables.");
       }
   
-      const res = await axios.get(`${API_URL}/Price/updateDistance`, {
+       await axios.get(`${API_URL}/Price/updateDistance`, {
         params: { Distance: totalDistance }, // Query parameter
         headers: { Accept: "*/*" }, // Optional, replicating cURL headers
       });
@@ -92,12 +91,11 @@ export  function DrawerDemo() {
       await SetUpdatedPrice();
       toast.success("Distance Updated Succesfully");
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err : unknown) {
       toast.error("Error ", {
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(err.message, null, 2)}</code>
+              {err instanceof Error ? JSON.stringify(err.message, null, 2) : 'Unknown error'}
           </pre>
         ),
       });

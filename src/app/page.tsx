@@ -1,20 +1,14 @@
 'use client'
-import { cn } from "@/lib/utils";
-import { InteractiveGridPattern } from "../components/magicui/interactive-grid-pattern";
 import { MorphingTextDemo } from "@/components/morphing";
-import { AnimatedCircularProgressBarDemo } from "@/components/circular-load";
-import { Slider } from "@/components/ui/slider"
-import { Card } from "@/components/ui/card-hover-effect";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import {DrawerDemo} from "@/components/drawer/page";
 import { SelectForm } from "@/components/select/page";
-import { toast } from 'sonner';
 import { FloatingDockDemo } from "@/components/floatingDeck/page";
 import { TypewriterEffectDemo } from "@/components/heroWriter/page";
 import Counter from "@/components/price/page";
-import {BearCounter,Controls,SetUpdatedPrice } from "@/store/store"
+import {SetUpdatedPrice } from "@/store/store"
 import { RadioGroupComp } from "@/components/radio/page";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SetSessionId } from "@/store/store";
 

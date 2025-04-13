@@ -1,5 +1,4 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/select";
 
 import { updateDemand, SetUpdatedPrice } from "@/store/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,7 +23,6 @@ const FormSchema = z.object({
 });
 
 export function SelectForm() {
-  const [goal, setGoal] = useState("0");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -37,7 +35,7 @@ export function SelectForm() {
     async function fetchGoal() {
       const res = await axios.get(`${API_URL}/Price/getState?value=demand`);
       const demandValue = String(res.data); // Ensure it's a string
-      setGoal(demandValue);
+     
       reset({ demand: demandValue });
     }
     fetchGoal();
@@ -45,7 +43,7 @@ export function SelectForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const res = await axios.get(`${API_URL}/Price/updateDemand`, {
+       await axios.get(`${API_URL}/Price/updateDemand`, {
         params: { Demand: data.demand },
         headers: { Accept: "*/*" },
       });
@@ -54,11 +52,17 @@ export function SelectForm() {
       await SetUpdatedPrice();
       toast.success("Demand Updated Successfully");
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("Error", {
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(err.message, null, 2)}</code>
+            <code className="text-white">
+              {JSON.stringify(
+                err instanceof Error ? err.message : 'Unknown error',
+                null,
+                2
+              )}
+            </code>
           </pre>
         ),
       });
