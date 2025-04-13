@@ -6,7 +6,7 @@ import { Bar, BarChart, ResponsiveContainer } from "recharts"
 import axios from "axios";
 import { Button } from "@/components/ui/button"
 import { toast } from 'sonner';
-import { SetUpdatedPrice } from "@/store/store";
+import { SetUpdatedPrice,sessionData } from "@/store/store";
 import {
   Drawer,
   DrawerClose,
@@ -62,8 +62,19 @@ const data = [
 ]
 
 export  function DrawerDemo() {
-  const [goal, setGoal] = React.useState(5)
-  const [response, setResponse] = useState(null);
+  const session = sessionData();
+
+  const [goal, setGoal] = React.useState(session.distance);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  React.useEffect(() => {
+    async function f(){
+      const res = await axios.get(`${API_URL}/Price/getState?value=distance`);
+      setGoal(res.data);
+    };
+    f();
+  }, []);
+
   const [error, setError] = useState(null);
   const handleUpdateDistance = async (totalDistance: number) => {
     try {
@@ -78,16 +89,15 @@ export  function DrawerDemo() {
         headers: { Accept: "*/*" }, // Optional, replicating cURL headers
       });
   
-      setResponse(res.data);
       await SetUpdatedPrice();
       toast.success("Distance Updated Succesfully");
 
     } catch (err: any) {
       setError(err.message);
-      toast("Error occurred:", {
+      toast.error("Error ", {
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(err, null, 2)}</code>
+            <code className="text-white">{JSON.stringify(err.message, null, 2)}</code>
           </pre>
         ),
       });

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { BearCounter } from "@/store/store"; // Zustand store
+import { BearCounter,sessionData } from "@/store/store"; // Zustand store
 
 export default function Counter() {
-  const counter = BearCounter((state) => state.count); // Access Zustand count
-  const [count, setCount] = useState(counter); // Local count for animation
-
+  const s = sessionData();
+  const counter = BearCounter((state) => state.count);
+  const [count, setCount] = useState(counter); 
   useEffect(() => {
     if (count !== counter) {
       const step = counter > count ? 1 : -1;
@@ -20,12 +20,12 @@ export default function Counter() {
 
       return () => clearInterval(interval);
     }
-  }, [counter]); // Reacts whenever `counter` changes in Zustand
+  }, [counter]); 
 
   return (
       
       <div className="text-4xl font-bold flex items-center justify-center">
-        ₹ {count}
+        ₹ {count} 
       </div>
   );
 }

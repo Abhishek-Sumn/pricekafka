@@ -9,53 +9,46 @@ import {
   IconTerminal2,
 } from "@tabler/icons-react";
 import Image from "next/image";
+import { Value } from "@radix-ui/react-select";
 
 export function FloatingDockDemo() {
   const links = [
     {
-      title: "Home",
+      title: "Sunny",
       icon: (
-        <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <img src="./sun.svg" width="100" height="100" alt="" />
+        //<IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "#",
+      value: 2
     },
 
     {
-      title: "Products",
+      title: "Cloudy",
       icon: (
-        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <img src="./cloud.svg" width="100" height="100" alt="" />
+
       ),
       href: "#",
+      value: 4
     },
     {
-      title: "Components",
+      title: "Rainy",
       icon: (
-        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <img src="./rain.svg" width="100" height="100" alt="" />
+
       ),
       href: "#",
+      value: 6
     },
 
     {
-      title: "Changelog",
+      title: "Night",
       icon: (
-        <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <img src="./yellow-moon.svg" width="100" height="100" alt="" />
       ),
       href: "#",
-    },
-
-    {
-      title: "Twitter",
-      icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
+      value: 8
     },
   ];
   return (

@@ -12,21 +12,35 @@ import { toast } from 'sonner';
 import { FloatingDockDemo } from "@/components/floatingDeck/page";
 import { TypewriterEffectDemo } from "@/components/heroWriter/page";
 import Counter from "@/components/price/page";
-import {BearCounter,Controls} from "@/store/store"
+import {BearCounter,Controls,SetUpdatedPrice } from "@/store/store"
 import { RadioGroupComp } from "@/components/radio/page";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { SetSessionId } from "@/store/store";
 
 export default function Home() {
+
+  useEffect(() => {
+    let storedSessionId = localStorage.getItem("session_id");
+
+    if (!storedSessionId) {
+      storedSessionId = uuidv4(); // Generate new session_id
+      localStorage.setItem("session_id", storedSessionId);
+    }
+
+    SetSessionId(storedSessionId); 
+    
+  }, []);
+
+  useEffect(() => {
+    SetUpdatedPrice(); // this updates the Zustand store from your API
+  }, []);
+
   return (
 
     <div className="">
-      {/* <InteractiveGridPattern
-        className={cn(
-          "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
-          "inset-x-150 inset-y-[0%] h-[100%] w-screen skew-y-12",
-        )}
-      /> */}
 
-
+      <div></div>
       <BackgroundLines className="fixed bg-background ">
         <div></div>
       </BackgroundLines>

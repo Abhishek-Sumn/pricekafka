@@ -10,13 +10,17 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { updateState,updateWeather,SetUpdatedPrice } from "@/store/store";
+import axios from "axios";
+import { toast } from 'sonner';
+
 
 export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href: string;value:number }[];
   desktopClassName?: string;
   mobileClassName?: string;
 }) => {
@@ -87,7 +91,7 @@ const FloatingDockDesktop = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href: string; value:NumberConstructor }[];
   className?: string;
 }) => {
   let mouseX = useMotionValue(Infinity);
@@ -112,11 +116,13 @@ function IconContainer({
   title,
   icon,
   href,
+  value
 }: {
   mouseX: MotionValue;
   title: string;
   icon: React.ReactNode;
   href: string;
+  value:number;
 }) {
   let ref = useRef<HTMLDivElement>(null);
 
@@ -159,6 +165,35 @@ function IconContainer({
   });
 
   const [hovered, setHovered] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleUpdateDistance = async (value: number) => {
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL; // Fetch environment variable
+  
+      if (!API_URL) {
+        throw new Error("API URL is not defined in environment variables.");
+      }
+  
+      const res = await axios.get(`${API_URL}/Price/updateWeather`, {
+        params: { Weather: value }, // Query parameter
+        headers: { Accept: "*/*" }, // Optional, replicating cURL headers
+      });
+  
+      await SetUpdatedPrice();
+      toast.success("Weather Updated Succesfully");
+
+    } catch (err: any) {
+      setError(err.message);
+      toast.error("Error ", {
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(err.message, null, 2)}</code>
+          </pre>
+        ),
+      });
+    }
+  };
 
   return (
     <Link href={href}>
@@ -184,6 +219,7 @@ function IconContainer({
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
           className="flex items-center justify-center"
+          onClick={() => handleUpdateDistance(value)}
         >
           {icon}
         </motion.div>

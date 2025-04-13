@@ -96,7 +96,7 @@ const SVG = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       initial={{ opacity: 0 }}
-      animate={{ opacity: 0.2 }}
+      animate={{ opacity: 0.8 }}
       transition={{ duration: 1 }}
       className="absolute inset-0 w-full h-full"
     >
