@@ -8,7 +8,7 @@ import { TypewriterEffectDemo } from "@/components/heroWriter/page";
 import Counter from "@/components/price/page";
 import {SetUpdatedPrice } from "@/store/store"
 import { RadioGroupComp } from "@/components/radio/page";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SetSessionId } from "@/store/store";
 
