@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import { SetSessionId } from "@/store/store";
 
 export default function Home() {
-
+const [showBanner, setShowBanner] = useState(true);
   useEffect(() => {
     let storedSessionId = localStorage.getItem("session_id");
 
@@ -34,7 +34,24 @@ export default function Home() {
 
     <div className="">
 
-      <div></div>
+      <div>
+       <div
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-4 rounded-lg shadow-lg z-50 w-full max-w-md text-center md:hidden transition-opacity duration-500 ${
+          showBanner ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <p className="text-sm sm:text-base">Not yet fully optimized for mobile, but you can use core functionality!</p>
+        <button
+          className="mt-2 bg-white text-blue-500 px-4 py-2 rounded"
+          onClick={() => setShowBanner(false)}
+        >
+          Close
+        </button>
+      </div>
+        
+      </div>
+
+      
       <BackgroundLines className="fixed bg-background ">
         <div></div>
       </BackgroundLines>
